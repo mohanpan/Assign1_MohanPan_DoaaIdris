@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Assign1</string>
+
+    <string name="One">1</string>
+    <string name="Two">2</string>
+    <string name="Three">3</string>
+    <string name="Four">4</string>
+    <string name="Five">5</string>
+    <string name="Six">6</string>
+    <string name="Seven">7</string>
+    <string name="Eight">8</string>
+    <string name="Nine">9</string>
+    <string name="Zero">0</string>
+
+    <string name="Clear">AC</string>
+    <string name="Add">+</string>
+    <string name="Minus">-</string>
+    <string name="Divide">÷</string>
+    <string name="Multiply">×</string>
+    <string name="Point">.</string>
+    <string name="Equals">=</string>
+
+    <string name="Back">Del</string>
+    <string name="plusMinus">+/-</string>
+    <string name="Brackets">( )</string>
+
+    <string name="Display">Click to Start</string>
+
+    <string name="History">----</string>
+
+    <string name="DarkMode">Dark Mode</string>
+</resources>
