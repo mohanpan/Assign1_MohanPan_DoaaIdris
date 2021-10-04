@@ -24,9 +24,9 @@
     <string name="plusMinus">+/-</string>
     <string name="Brackets">( )</string>
 
-    <string name="Display">Click to Start</string>
+    <string name="Display">Double click to Start</string>
 
-    <string name="History">----</string>
+    <string name="History">History: \n\n\n\n\n\n\n\n\n</string>
 
     <string name="DarkMode">Dark Mode</string>
 </resources>

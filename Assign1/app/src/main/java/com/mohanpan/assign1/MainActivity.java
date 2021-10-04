@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     display.setText("");
                     display.setTextColor(Color.BLACK);
                 }
+                display.setTextColor(Color.BLACK);
             }
         });
 
