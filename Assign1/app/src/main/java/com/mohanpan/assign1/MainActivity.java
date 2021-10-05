@@ -2,6 +2,7 @@ package com.mohanpan.assign1;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -11,12 +12,22 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText display;
 
     Switch swtch;
+
+    TextView hist;
+    ArrayList<String> history = new ArrayList<>();
+
+    ConstraintLayout bg;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -26,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         display = findViewById(R.id.input);
         display.setShowSoftInputOnFocus(false);
+
+        hist = findViewById(R.id.historyTxt);
+
+        bg = findViewById(R.id.background);
 
         display.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,16 +60,23 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                 if (isChecked){
                     buttonView.setBackgroundColor(Color.GRAY);
+                    bg.setBackgroundColor(Color.GRAY);
 
                     for (int i = 0; i <= 5; i++){
-                        //accessing each element of array
                         display.setTextColor(Color.WHITE);
+                        swtch.setTextColor(Color.WHITE);
+                        swtch.setText("Dark Mode");
+                        hist.setTextColor(Color.WHITE);
                     }
 
                 }else {
                     buttonView.setBackgroundColor(Color.WHITE);
+                    bg.setBackgroundColor(Color.WHITE);
                     for (int i = 0; i <= 5; i++) {
                         display.setTextColor(Color.BLACK);
+                        swtch.setTextColor(Color.BLACK);
+                        swtch.setText("Light Mode");
+                        hist.setTextColor(Color.GRAY);
                     }
                 }
             }
@@ -122,8 +144,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void ACBtn (View view) {
         display.setText("");
     }
@@ -172,8 +192,6 @@ public class MainActivity extends AppCompatActivity {
         updateInput("−");
     }
 
-
-
     public void divideBtn (View view) {
         updateInput("÷");
     }
@@ -191,6 +209,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void equalBtn (View view) {
+
+
+        history.add(display.getText().toString());
+
+        display.setText("");
+
+        hist.setText("History: \n" + Arrays.toString(history.toArray()).replace("[", "").replace
+                ("]", "").replace(", ", "\n"));
+
+        if(history.size() > 4){
+            history.remove(0);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("calculatorText", display.getText().toString());
+        outState.putStringArrayList("history", history);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        display.setText(savedInstanceState.getCharSequence("calculatorText"));
+
+        history = savedInstanceState.getStringArrayList("history");
+
 
     }
 }
