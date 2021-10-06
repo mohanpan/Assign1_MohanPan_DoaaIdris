@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     ConstraintLayout bg;
 
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         String leftStr = oldStr.substring(0, cursorPos);
         String rightStr = oldStr.substring(cursorPos);
 
+
         if (getString(R.string.Display).equals(display.getText().toString())){
             display.setText(newStrInput);
 
@@ -149,9 +151,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void DELBtn (View view) {
-        int cursorPos = display.getSelectionStart();
         int textLength = display.getText().length();
-
+        int cursorPos = display.getSelectionStart();
         if (cursorPos != 0 && textLength != 0) {
             SpannableStringBuilder selection = (SpannableStringBuilder) display.getText();
             selection.replace(cursorPos - 1, cursorPos, "");
@@ -219,11 +220,12 @@ public class MainActivity extends AppCompatActivity {
         Expression exp = new Expression(signal);
         String answer = String.valueOf(exp.calculate());
 
+        history.add(display.getText().toString() + "=" + answer);
+
         display.setText(answer);
         //set cursorPos
         display.setSelection(answer.length());
 
-        history.add(display.getText().toString());
 
         hist.setText("History: \n" + Arrays.toString(history.toArray()).replace("[", "").replace
                 ("]", "").replace(", ", "\n"));
@@ -231,5 +233,30 @@ public class MainActivity extends AppCompatActivity {
         if(history.size() > 4){
             history.remove(0);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("calcText", display.toString());
+        outState.putStringArrayList("historyText", history);
+
+        int cursorPos = display.getSelectionStart();
+        outState.putInt("cursorPosition", cursorPos);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        history = savedInstanceState.getStringArrayList("historyText");
+        hist.setText("History: \n" + Arrays.toString(history.toArray()).replace("[", "").replace
+                ("]", "").replace(", ", "\n"));
+
+        int cursorPos = savedInstanceState.getInt("cursorPosition");
+        display.setSelection(cursorPos);
+        
+
+
     }
 }
