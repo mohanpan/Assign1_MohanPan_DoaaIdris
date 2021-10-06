@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
 
         int cursorPos = savedInstanceState.getInt("cursorPosition");
         display.setSelection(cursorPos);
-        
+
 
 
     }
