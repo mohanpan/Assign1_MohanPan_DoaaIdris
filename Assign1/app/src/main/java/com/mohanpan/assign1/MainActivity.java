@@ -3,7 +3,7 @@ package com.mohanpan.assign1;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
+import org.mariuszgromada.math.mxparser.*;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void pointBtn (View view) {
         updateInput(".");
+
     }
 
     public void plusMinusBtn (View view) {
@@ -209,11 +210,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void equalBtn (View view) {
+        String signal = display.getText().toString();
 
+        //so that program can recognize and calculate the equation that user entered.
+        signal = signal.replaceAll("÷", "/");
+        signal = signal.replaceAll("×", "*");
+
+        Expression exp = new Expression(signal);
+        String answer = String.valueOf(exp.calculate());
+
+        display.setText(answer);
+        //set cursorPos
+        display.setSelection(answer.length());
 
         history.add(display.getText().toString());
-
-        display.setText("");
 
         hist.setText("History: \n" + Arrays.toString(history.toArray()).replace("[", "").replace
                 ("]", "").replace(", ", "\n"));
@@ -221,23 +231,5 @@ public class MainActivity extends AppCompatActivity {
         if(history.size() > 4){
             history.remove(0);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putString("calculatorText", display.getText().toString());
-        outState.putStringArrayList("history", history);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        display.setText(savedInstanceState.getCharSequence("calculatorText"));
-
-        history = savedInstanceState.getStringArrayList("history");
-
-
     }
 }
