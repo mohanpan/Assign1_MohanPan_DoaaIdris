@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> history = new ArrayList<>();
 
     ConstraintLayout bg;
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     //Split string we made and do function as we go
@@ -145,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         updateInput("0");
     }
 
-
     public void ACBtn (View view) {
         display.setText("");
     }
@@ -191,7 +191,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void plusMinusBtn (View view) {
-        updateInput("−");
+
+        String last = getLastDigit(display.getText().toString().replace("(", "").replace(")", ""));
+        //System.out.println(last);
+
+
+        if (display.getText().toString().endsWith(last)){
+            display.setText(display.getText().toString().replace(last, "(-" + last + ")"));
+        }
+        
+        else if (display.getText().toString().endsWith("-"+ last +")")){
+            display.setText(display.getText().toString().replace("(-" , "" ).replace(")", ""));
+        }
+
+
+        display.setSelection(display.getText().length());
+
     }
 
     public void divideBtn (View view) {
@@ -256,7 +271,50 @@ public class MainActivity extends AppCompatActivity {
         int cursorPos = savedInstanceState.getInt("cursorPosition");
         display.setSelection(cursorPos);
 
+    }
+
+    public String getLastDigit(String expression) {
+        StringBuffer result = new StringBuffer();
+
+        for (int i = expression.length() - 1; i >= 0; i--) {
+            char c = expression.charAt(i);
+
+            if (c == '=') {
+                break;
+            }
+
+            if (c == '+') {
+                break;
+            }
+
+            if (c == '-') {
+                break;
+            }
+
+            if (c == '÷') {
+                break;
+            }
+
+            if (c == '×') {
+                break;
+            }
+
+            if (c == '(') {
+                result.append(c);
+            }
+
+            if (c == ')') {
+                result.append(c);
+            }
 
 
+            else {
+                result.append(c);
+            }
+        }
+
+        return result.reverse()
+                .toString()
+                .trim();
     }
 }
