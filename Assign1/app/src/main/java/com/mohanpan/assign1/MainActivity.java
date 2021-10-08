@@ -21,28 +21,28 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    //variable declarations
     private EditText display;
-
     Switch swtch;
-
     TextView hist;
     ArrayList<String> history = new ArrayList<>();
-
-    //variable for the switch we create
     ConstraintLayout bg;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //getting views from their ids
         display = findViewById(R.id.input);
-        display.setShowSoftInputOnFocus(false);
-
         hist = findViewById(R.id.historyTxt);
-
         bg = findViewById(R.id.background);
+        swtch = findViewById(R.id.DarkMode);
+
+        //to make sure keyboard does not show up on click
+        display.setShowSoftInputOnFocus(false);
 
         display.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        swtch = findViewById(R.id.DarkMode);
-
-        //switch for different mode
+        //switch listener to change between light and dark modes
         swtch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //update input for all number buttons
+    //Methods for all number buttons
     public void oneBtn (View view) {
         updateInput("1");
     }
@@ -155,10 +153,12 @@ public class MainActivity extends AppCompatActivity {
         updateInput("0");
     }
 
+    // Deletes everything in the edit text
     public void ACBtn (View view) {
         display.setText("");
     }
 
+    // Deletes last thing added to edit Text
     public void DELBtn (View view) {
         int textLength = display.getText().length();
         int cursorPos = display.getSelectionStart();
@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Adds parenthesis
     public void bracketsBtn (View view) {
         int cursorPos = display.getSelectionStart();
         int openBrackets = 0;
@@ -198,40 +199,25 @@ public class MainActivity extends AppCompatActivity {
         display.setSelection(cursorPos + 1);
     }
 
+    // To add a decimal point
     public void pointBtn (View view) {
-        //updateInput(".");
 
-        //made this equation so that user cannot enter two . at once
-        String last = getLastDigit(display.getText().toString().replace(".", ""));
-
-        if (display.getText().toString().endsWith(last)){
-            display.setText(display.getText().toString().replace(last, last + "."));
+        // Checks to see if last inputted character is the same to avoid entering it twice
+        if(display.getText().toString().endsWith(".")){
+            updateInput("");
         }
 
-        else if (display.getText().toString().endsWith(last +"..")){
-            display.setText(display.getText().toString().replace("." , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"+")){
-            display.setText(display.getText().toString().replace("+" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"×")){
-            display.setText(display.getText().toString().replace("×" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"-")){
-            display.setText(display.getText().toString().replace("-" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"÷")){
-            display.setText(display.getText().toString().replace("÷" , ""));
+        else{
+            updateInput(".");
         }
 
-        display.setSelection(display.getText().length());
     }
 
+    // Plus/minus button to change the sign of the last number added
     public void plusMinusBtn (View view) {
 
         String last = getLastDigit(display.getText().toString().replace("(", "").replace(")", ""));
         //System.out.println(last);
-
 
         if (display.getText().toString().endsWith(last)){
             display.setText(display.getText().toString().replace(last, "(-" + last + ")"));
@@ -246,105 +232,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Operation buttons
     public void divideBtn (View view) {
-        //updateInput("÷");
 
-        //made same equation as . button so there cannot be a second ÷ in a row
-        String last = getLastDigit(display.getText().toString().replace("÷", ""));
-
-        if (display.getText().toString().endsWith(last)){
-            display.setText(display.getText().toString().replace(last, last + "÷"));
+        // Checks to see if last inputted character is the same to avoid entering it twice
+        if(display.getText().toString().endsWith("÷")){
+            display.setText(display.getText());
         }
 
-        else if (display.getText().toString().endsWith(last +"÷÷")){
-            display.setText(display.getText().toString().replace("÷" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"+")){
-            display.setText(display.getText().toString().replace("+" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"×")){
-            display.setText(display.getText().toString().replace("×" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"-")){
-            display.setText(display.getText().toString().replace("-" , ""));
+        else{
+            updateInput("÷");
         }
 
         display.setSelection(display.getText().length());
     }
 
     public void timesBtn (View view) {
-        //updateInput("×");
 
-        //made same equation as . button so there cannot be a second × in a row
-        String last = getLastDigit(display.getText().toString().replace("×", ""));
-
-        if (display.getText().toString().endsWith(last)){
-            display.setText(display.getText().toString().replace(last, last + "×"));
+        // Checks to see if last inputted character is the same to avoid entering it twice
+        if(display.getText().toString().endsWith("×")){
+            display.setText(display.getText());
         }
 
-        else if (display.getText().toString().endsWith(last +"××")){
-            display.setText(display.getText().toString().replace("×" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"+")){
-            display.setText(display.getText().toString().replace("+" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"-")){
-            display.setText(display.getText().toString().replace("-" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"÷")){
-            display.setText(display.getText().toString().replace("÷" , ""));
+        else{
+            updateInput("×");
         }
 
         display.setSelection(display.getText().length());
     }
 
     public void plusBtn (View view) {
-        //updateInput("+");
 
-        //made same equation as . button so there cannot be a second + in a row
-        String last = getLastDigit(display.getText().toString().replace("+", ""));
-
-        if (display.getText().toString().endsWith(last)){
-            display.setText(display.getText().toString().replace(last, last + "+"));
+        // Checks to see if last inputted character is the same to avoid entering it twice
+        if(display.getText().toString().endsWith("+")){
+            display.setText(display.getText());
         }
 
-        else if (display.getText().toString().endsWith(last +"++")){
-            display.setText(display.getText().toString().replace("+" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"×")){
-            display.setText(display.getText().toString().replace("×" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"-")){
-            display.setText(display.getText().toString().replace("-" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"÷")){
-            display.setText(display.getText().toString().replace("÷" , ""));
+        else{
+            updateInput("+");
         }
 
         display.setSelection(display.getText().length());
     }
 
     public void minusBtn (View view) {
-        //updateInput("-");
 
-        //made same equation as . button so there cannot be a second - in a row
-        String last = getLastDigit(display.getText().toString().replace("-", ""));
-
-        if (display.getText().toString().endsWith(last)){
-            display.setText(display.getText().toString().replace(last, last + "-"));
+        // Checks to see if last inputted character is the same to avoid entering it twice
+        if(display.getText().toString().endsWith("-")){
+            display.setText(display.getText());
         }
 
-        else if (display.getText().toString().endsWith(last +"--")){
-            display.setText(display.getText().toString().replace("-" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"+")){
-            display.setText(display.getText().toString().replace("+" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"×")){
-            display.setText(display.getText().toString().replace("×" , ""));
-        }
-        else if (display.getText().toString().endsWith(last +"÷")){
-            display.setText(display.getText().toString().replace("÷" , ""));
+        else{
+            updateInput("-");
         }
 
         display.setSelection(display.getText().length());
@@ -360,13 +299,13 @@ public class MainActivity extends AppCompatActivity {
         Expression exp = new Expression(signal);
         String answer = String.valueOf(exp.calculate());
 
+        // Adding to history string array list
         history.add(display.getText().toString() + "=" + answer);
 
         display.setText(answer);
-        //set cursorPos
         display.setSelection(answer.length());
 
-
+        //setting history string array list to history text view
         hist.setText("History: \n" + Arrays.toString(history.toArray()).replace("[", "").replace
                 ("]", "").replace(", ", "\n"));
 
@@ -375,6 +314,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //methods to save history, edit text information, and the cursor position
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
