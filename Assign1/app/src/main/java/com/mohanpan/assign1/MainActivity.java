@@ -236,7 +236,8 @@ public class MainActivity extends AppCompatActivity {
     public void divideBtn (View view) {
 
         // Checks to see if last inputted character is the same to avoid entering it twice
-        if(display.getText().toString().endsWith("÷")){
+        // Also doesn't allow a multiple or plus or minus operation right after it
+        if(display.getText().toString().endsWith("÷") || display.getText().toString().endsWith("×") || display.getText().toString().endsWith("+") || display.getText().toString().endsWith("-")){
             display.setText(display.getText());
         }
 
@@ -250,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
     public void timesBtn (View view) {
 
         // Checks to see if last inputted character is the same to avoid entering it twice
-        if(display.getText().toString().endsWith("×")){
+        // Also doesn't allow a divide or plus or minus operation right after it
+        if(display.getText().toString().endsWith("×") || display.getText().toString().endsWith("÷") || display.getText().toString().endsWith("+") || display.getText().toString().endsWith("-")){
             display.setText(display.getText());
         }
 
