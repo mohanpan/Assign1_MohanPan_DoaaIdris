@@ -6,7 +6,7 @@ Website to download it: https://www.oracle.com/java/technologies/downloads/#jdk8
 If you can not find it: https://drive.google.com/file/d/10VKXr9hwb7DrEEcC6XcmPRVPzE5CySt9/view?usp=sharing
 
 Here is our code in GitHub: https://github.com/mohanpan/Assign1_MohanPan_DoaaIdris
-Demo video: 
+Demo video: https://drive.google.com/file/d/1XeRTlxapor8JOXQ-AbqDLmyAEX3MMpkk/view?usp=sharing
 
 
 This assignment is done by Mohan Pan and Doaa Idris.
